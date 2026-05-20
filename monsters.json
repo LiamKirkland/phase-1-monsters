@@ -6006,5 +6006,6 @@
       "description": "131313",
       "id": 1001
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
