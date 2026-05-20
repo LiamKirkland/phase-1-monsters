@@ -86,7 +86,9 @@ function postMonster(event) {
     body: JSON.stringify(createMonster()),
   })
     .then((res) => res.json())
-    .then(console.log)
+    .then((data) => {
+      console.log(data)
+      getMonstersByPage(page)})
 
     event.target.reset()
 }
@@ -112,6 +114,8 @@ function getMonstersByPage(pageNum) {
       `http://localhost:3000/monsters/?_limit=50&_page=${pageNum}`,
     )
       .then((resp) => {
+        getPages(Math.ceil(resp.headers.get("x-total-count") / 50)) 
+        document.getElementById('pageSelector').value = pageNum 
         return resp.json()
       })
       .then(appendMonsters)
