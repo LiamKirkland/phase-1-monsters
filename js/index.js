@@ -5,9 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   createDiv.addEventListener("submit", postMonster)
   const pageSelector = document.getElementById('pageSelector')
   pageSelector.addEventListener('change', event => {
-
-    
     getMonstersByPage(event.target.value)
+    page = +event.target.value
   })
 
   getMonsters(page, totalPages, 0)
@@ -26,6 +25,8 @@ function getMonsters(pageNum, maxPages, direction) {
     )
       .then((resp) => {
         getPages(Math.ceil(resp.headers.get("x-total-count") / 50))
+        const pageSelector = document.getElementById('pageSelector')
+        pageSelector.value = pageNum + direction
         return resp.json()
       })
       .then(appendMonsters)
@@ -106,11 +107,11 @@ function getPages(allPages) {
 }
 
 function getMonstersByPage(pageNum) {
+
   fetch(
       `http://localhost:3000/monsters/?_limit=50&_page=${pageNum}`,
     )
       .then((resp) => {
-        getPages(Math.ceil(resp.headers.get("x-total-count") / 50))
         return resp.json()
       })
       .then(appendMonsters)
